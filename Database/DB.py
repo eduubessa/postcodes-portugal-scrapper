@@ -1,5 +1,5 @@
-from App.Helpers.Config import Config
 from Database.MySql import MySql
+from App.Helpers.Config import Config
 from Database.SqlServer import SqlServer
 
 class DB:

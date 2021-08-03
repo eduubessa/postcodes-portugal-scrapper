@@ -20,3 +20,19 @@ class Config:
                 return default
         except:
             return default
+
+    @staticmethod
+    def multi_get(variable, default=""):
+        config = ConfigParser()
+        config.read(os.path.dirname(os.path.realpath(__file__)) + "/../../config.ini")
+
+        section = variable.split(".")[0]
+        field = variable.split(".")[1]
+
+        try:
+            if config[section.upper()][field] is not None:
+                return config[section.upper()][field].split('|')
+            else:
+                return default
+        except:
+            return default
