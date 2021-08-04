@@ -49,3 +49,6 @@ class DB:
     def update(self, data):
         self.__query = self.__query.update(data)
 
+    def __del__(self):
+        self.__query = None
+

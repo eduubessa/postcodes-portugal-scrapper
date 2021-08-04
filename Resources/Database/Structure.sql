@@ -8,16 +8,16 @@ drop table if exists counties;
 
 create table postcodes (
     id bigint unsigned auto_increment primary key,
-    district varchar(30) null,
-    county varchar(50) null,
-    parish varchar(200) null,
+    postcode varchar(10) not null,
+    district varchar(30) not null,
+    county varchar(50) not null,
+    parish varchar(200) not null,
     longitude varchar(200) null,
     latitude varchar(200) null
 );
 
 create table districts (
     id bigint unsigned auto_increment primary key,
-    postcode varchar(10) unique not null,
     district varchar(30) not null,
     counties int default 0,
     parish int default 0,

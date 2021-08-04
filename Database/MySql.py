@@ -3,8 +3,6 @@ from App.Helpers.Config import Config
 
 
 class MySql:
-
-
     __connection = None
     __table = None
     __sql = None
@@ -91,7 +89,7 @@ class MySql:
             print("MySql Error Update")
             print(ex)
 
-    def select(self, columns = '*'):
+    def select(self, columns='*'):
         try:
             if self.__table is None:
                 raise ValueError("No table selected, use table method first")
@@ -131,7 +129,7 @@ class MySql:
             print("MySql Where Error")
             print(ex)
 
-    def orderBy(self, field, order = 'ASC'):
+    def orderBy(self, field, order='ASC'):
         if "SELECT" in self.__sql:
             self.__sql += " ORDER BY {} {}".format(field, order)
         return self
@@ -142,6 +140,7 @@ class MySql:
             # Read single record
             cursor.execute(self.__sql, self.__values)
             row = cursor.fetchone()
+            self.__values = []
             return row
 
     def fetchall(self):
@@ -149,8 +148,7 @@ class MySql:
             # Read fetch all rows
             cursor.execute(self.__sql, self.__values)
             rows = cursor.fetchall()
-            self.__values = []
-            print(self.__values)
+            self.__values.clear()
             return rows
 
     def __del__(self):

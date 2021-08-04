@@ -42,6 +42,9 @@ class Browser:
             if x == district:
                 return el_district.find_element_by_tag_name("a").get_attribute("href")
 
+    def fetch_all_parishes_by_county(self, county):
+        print(county)
+
     def navigation_to(self, to):
         if to is not None:
             self.driver.get(str(to))

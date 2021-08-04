@@ -36,5 +36,6 @@ class Scrapper:
         # Fetch all districts
         districts = District.where('scrapped', False).get()
         for district in districts:
-            counties = County.where('district_id', district["id"]).get()
-            print(counties)
+            counties = County.where('district_id', 1).get()
+            for county in counties:
+                browser.fetch_all_parishes_by_county(county["county"])
