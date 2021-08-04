@@ -47,5 +47,5 @@ class DB:
         return self.__database.insert(data)
 
     def update(self, data):
-        return self.__query.update(data)
+        self.__query = self.__query.update(data)
 

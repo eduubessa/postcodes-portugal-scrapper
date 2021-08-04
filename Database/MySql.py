@@ -84,9 +84,7 @@ class MySql:
                                 sql += ", "
 
                         sql += self.__sql.replace("SELECT * FROM `{}`".format(self.__table), "")
-
-                        print(sql)
-
+                        return self
                     else:
                         raise ValueError("You need WHERE method first")
         except Exception as ex:
@@ -104,15 +102,14 @@ class MySql:
 
     def where(self, field, value, condition="LIKE"):
         try:
-
             if self.__table is None:
                 raise ValueError("No table selected, use table method first")
 
             if "SELECT" in self.__sql or "UPDATE" in self.__sql or "DELETE" in self.__sql:
                 if "WHERE" in self.__sql:
-                    self.__sql += " AND {}".format(field)
+                    self.__sql += " AND {0}".format(field)
                 else:
-                    self.__sql += " WHERE {}".format(field)
+                    self.__sql += " WHERE {0}".format(field)
 
                 if condition == "LIKE" or condition == "=":
                     if isinstance(value, int) or isinstance(value, float):
@@ -125,8 +122,7 @@ class MySql:
                     else:
                         self.__sql += "NOT LIKE %s"
                 else:
-                    raise ValueError("Condition is not valid!")
-
+                    self.select().where(field, value, condition)
                 self.__values.append(value)
                 return self
             else:
@@ -141,6 +137,7 @@ class MySql:
         return self
 
     def fetchone(self):
+        print(self.__sql)
         with self.__connection.cursor() as cursor:
             # Read single record
             cursor.execute(self.__sql, self.__values)
@@ -152,4 +149,9 @@ class MySql:
             # Read fetch all rows
             cursor.execute(self.__sql, self.__values)
             rows = cursor.fetchall()
+            self.__values = []
+            print(self.__values)
             return rows
+
+    def __del__(self):
+        self.__values = []

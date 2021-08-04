@@ -1,19 +1,32 @@
-from App.Helpers.Browser import Browser
-from App.Helpers.Config import Config
-from App.Models.District import District
-from App.Models.Postcode import Postcode
-from App.Helpers.Mail import Mail
+from App.Helpers.Scrapper import Scrapper
 
-# Postcode.postcode = "3241"
-# Postcode.district = "Leiria"
-# Postcode.county = "Ansião"
-# Postcode.parish = "Santiago da Guarda"
-# Postcode.save()
+def menu():
+    print(" ########################################################   ")
+    print("|                                                         |")
+    print("|  BEM-VINDO AO SCRAPPER DOS CÓDIGOS POSTAIS PORTUGUESES  |")
+    print("|                                                         |")
+    print(" ########################################################   ")
+    print("|                                                         |")
+    print("|  Escolha uma opção:                                     |")
+    print("|                                                         |")
+    print("|  D - Buscar todos distritos                             |")
+    print("|  C - Buscar todos concelhos                             |")
+    print("|  F - Buscar todos freguesias                            |")
+    print("-----------------------------------------------------------")
+    option = input()
 
-# mail = Mail()
-# mail.send()
+    if option == "D" or option == "d":
+        print("|  A SCRAPPER OS DISTRITOS PORTUGUESES ...  |")
+        Scrapper.fetch_districts()
+        print("|  TERMINOU ! ...  |")
+        menu()
+    elif option == "C" or option == "c":
+        print("|  A SCRAPPER OS DISTRITOS PORTUGUESES ...  |")
+        Scrapper.fetch_counties()
+        print("|  TERMINOU ! ...  |")
+    elif option == "F" or option == "f":
+        print("|  A SCRAPPER OS FREGUESIAS PORTUGUESES ...  |")
+        Scrapper.fetch_parishes()
+        print("|  TERMINOU ! ...  |")
 
-# browser = Browser()
-# browser.all_counties_select()
-
-District.where('district', 'Leiria').update([['scrapped', 1]])
+menu()

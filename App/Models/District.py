@@ -6,9 +6,8 @@ class District:
     district = None
     scrapped = False
 
-    __selected = False
+    __data = None
     __query = None
-    __last_method = None
 
     @staticmethod
     def all():
@@ -18,7 +17,7 @@ class District:
     @staticmethod
     def where(field, value, condition="LIKE"):
         db = DB()
-        if District.__selected is False:
+        if District.__query is None:
             District.__query = db.table(District.__table).select().where(field, value, condition)
         else:
             District.__query = District.__query.where(field, value, condition)
@@ -26,8 +25,7 @@ class District:
 
     @staticmethod
     def get():
-        db = DB()
-        return db.table(District.__table).select().get()
+        return District.__query.get()
 
     @staticmethod
     def first():
@@ -37,6 +35,7 @@ class District:
         else:
             return District.__query.first()
 
+    @staticmethod
     def last():
         db = DB()
         return db.table(District.__table).select().last()
@@ -48,9 +47,14 @@ class District:
             ['scrapped', District.scrapped]
         ]
         db = DB()
-        db.table(District.__table).insert(data)
+        return db.table(District.__table).insert(data)
 
     @staticmethod
-    def update(data):
+    def update():
+        data = [
+            ['district', District.district],
+            ['scrapped', District.scrapped]
+        ]
+        db = DB()
         return District.__query.update(data)
 
