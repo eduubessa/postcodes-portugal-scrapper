@@ -1,11 +1,14 @@
 import pymysql.cursors
 from App.Helpers.Config import Config
 
+
 class MySql:
+
 
     __connection = None
     __table = None
     __sql = None
+    __values = []
 
     def __init__(self):
         try:
@@ -36,7 +39,7 @@ class MySql:
 
                     for i, x in enumerate(data):
                         sql += "`{}`".format(x[0])
-                        if i < len(data)-1:
+                        if i < len(data) - 1:
                             sql += ", "
 
                     sql += ") VALUES ("
@@ -44,7 +47,7 @@ class MySql:
                     for i, y in enumerate(data):
                         sql += "%s"
                         values.append(y[1])
-                        if i < len(data)-1:
+                        if i < len(data) - 1:
                             sql += ", "
 
                     sql += ");"
@@ -58,10 +61,95 @@ class MySql:
                     cursor.execute(sql)
                     row = cursor.fetchone()
                     print(row)
-
-
-
-
         except Exception as ex:
-            print("Error MySql Insert:")
+            print("MySql Error Insert")
             print(ex)
+
+    def update(self, data):
+        values = []
+
+        try:
+            if self.__table is None:
+                raise ValueError("No table selected, use table method first")
+            with self.__connection:
+                with self.__connection.cursor() as cursor:
+                    if "WHERE" in self.__sql:
+                        # Create a new record
+                        sql = "UPDATE `{}` SET ".format(self.__table)
+
+                        for i, x in enumerate(data):
+                            sql += "`{}` = %s".format(x[0])
+                            values.append(x[1])
+                            if i < len(data) - 1:
+                                sql += ", "
+
+                        sql += self.__sql.replace("SELECT * FROM `{}`".format(self.__table), "")
+
+                        print(sql)
+
+                    else:
+                        raise ValueError("You need WHERE method first")
+        except Exception as ex:
+            print("MySql Error Update")
+            print(ex)
+
+    def select(self, columns = '*'):
+        try:
+            if self.__table is None:
+                raise ValueError("No table selected, use table method first")
+            self.__sql = "SELECT {} FROM `{}`".format(columns, self.__table)
+            return self
+        except Exception as ex:
+            print(ex)
+
+    def where(self, field, value, condition="LIKE"):
+        try:
+
+            if self.__table is None:
+                raise ValueError("No table selected, use table method first")
+
+            if "SELECT" in self.__sql or "UPDATE" in self.__sql or "DELETE" in self.__sql:
+                if "WHERE" in self.__sql:
+                    self.__sql += " AND {}".format(field)
+                else:
+                    self.__sql += " WHERE {}".format(field)
+
+                if condition == "LIKE" or condition == "=":
+                    if isinstance(value, int) or isinstance(value, float):
+                        self.__sql += " = %s"
+                    else:
+                        self.__sql += " LIKE %s"
+                elif condition == "NOT LIKE" or condition == "!=":
+                    if isinstance(value, int) or isinstance(value, float):
+                        self.__sql += " != %s"
+                    else:
+                        self.__sql += "NOT LIKE %s"
+                else:
+                    raise ValueError("Condition is not valid!")
+
+                self.__values.append(value)
+                return self
+            else:
+                raise ValueError("Where working only select, update and delete")
+        except Exception as ex:
+            print("MySql Where Error")
+            print(ex)
+
+    def orderBy(self, field, order = 'ASC'):
+        if "SELECT" in self.__sql:
+            self.__sql += " ORDER BY {} {}".format(field, order)
+        return self
+
+    def fetchone(self):
+        with self.__connection.cursor() as cursor:
+            # Read single record
+            cursor.execute(self.__sql, self.__values)
+            row = cursor.fetchone()
+            return row
+
+    def fetchall(self):
+        with self.__connection.cursor() as cursor:
+            # Read fetch all rows
+            cursor.execute(self.__sql, self.__values)
+            rows = cursor.fetchall()
+            return rows

@@ -1,4 +1,6 @@
+from App.Helpers.Browser import Browser
 from App.Helpers.Config import Config
+from App.Models.District import District
 from App.Models.Postcode import Postcode
 from App.Helpers.Mail import Mail
 
@@ -11,4 +13,7 @@ from App.Helpers.Mail import Mail
 # mail = Mail()
 # mail.send()
 
-print(Config.multi_get('scrapper.locations'))
+# browser = Browser()
+# browser.all_counties_select()
+
+District.where('district', 'Leiria').update([['scrapped', 1]])
