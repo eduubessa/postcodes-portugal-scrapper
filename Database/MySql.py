@@ -105,9 +105,9 @@ class MySql:
 
             if "SELECT" in self.__sql or "UPDATE" in self.__sql or "DELETE" in self.__sql:
                 if "WHERE" in self.__sql:
-                    self.__sql += " AND {0}".format(field)
+                    self.__sql += " AND {}".format(field)
                 else:
-                    self.__sql += " WHERE {0}".format(field)
+                    self.__sql += " WHERE {}".format(field)
 
                 if condition == "LIKE" or condition == "=":
                     if isinstance(value, int) or isinstance(value, float):
@@ -135,7 +135,6 @@ class MySql:
         return self
 
     def fetchone(self):
-        print(self.__sql)
         with self.__connection.cursor() as cursor:
             # Read single record
             cursor.execute(self.__sql, self.__values)
@@ -152,4 +151,7 @@ class MySql:
             return rows
 
     def __del__(self):
-        self.__values = []
+        self.__sql = None
+        self.__table = None
+        self.__values.clear()
+

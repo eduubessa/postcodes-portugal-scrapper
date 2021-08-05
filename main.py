@@ -11,13 +11,14 @@ def menu():
     print("|                                                         |")
     print(" ########################################################   ")
     print("|                                                         |")
-    print("|  Escolha uma opção:                                     |")
+    print("|  MENU                                                   |")
     print("|                                                         |")
     print("|  D - Buscar todos distritos                             |")
     print("|  C - Buscar todos concelhos                             |")
     print("|  F - Buscar todos freguesias                            |")
     print("-----------------------------------------------------------")
-    option = input()
+    option = input("Selecione uma opção: ")
+    os.system("cls")
 
     if option == "D" or option == "d":
         print("|  A SCRAPPER OS DISTRITOS PORTUGUESES ...  |")
