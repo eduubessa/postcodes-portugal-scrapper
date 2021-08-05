@@ -6,7 +6,7 @@ class MySql:
     __connection = None
     __table = None
     __sql = None
-    __values = []
+    __values = list()
 
     def __init__(self):
         try:
@@ -58,7 +58,7 @@ class MySql:
                     sql = "SELECT * FROM `{}` ORDER BY `id` DESC;".format(self.__table)
                     cursor.execute(sql)
                     row = cursor.fetchone()
-                    print(row)
+                    # print(row)
         except Exception as ex:
             print("MySql Error Insert")
             print(ex)
@@ -91,6 +91,7 @@ class MySql:
 
     def select(self, columns='*'):
         try:
+            self.__values.clear()
             if self.__table is None:
                 raise ValueError("No table selected, use table method first")
             self.__sql = "SELECT {} FROM `{}`".format(columns, self.__table)
@@ -104,27 +105,31 @@ class MySql:
                 raise ValueError("No table selected, use table method first")
 
             if "SELECT" in self.__sql or "UPDATE" in self.__sql or "DELETE" in self.__sql:
+
                 if "WHERE" in self.__sql:
                     self.__sql += " AND {}".format(field)
                 else:
                     self.__sql += " WHERE {}".format(field)
 
                 if condition == "LIKE" or condition == "=":
+
                     if isinstance(value, int) or isinstance(value, float):
                         self.__sql += " = %s"
                     else:
                         self.__sql += " LIKE %s"
+
                 elif condition == "NOT LIKE" or condition == "!=":
                     if isinstance(value, int) or isinstance(value, float):
                         self.__sql += " != %s"
                     else:
                         self.__sql += "NOT LIKE %s"
-                else:
-                    self.select().where(field, value, condition)
-                self.__values.append(value)
-                return self
             else:
                 raise ValueError("Where working only select, update and delete")
+
+            self.__values.append(value)
+
+            return self
+
         except Exception as ex:
             print("MySql Where Error")
             print(ex)
@@ -139,7 +144,7 @@ class MySql:
             # Read single record
             cursor.execute(self.__sql, self.__values)
             row = cursor.fetchone()
-            self.__values = []
+            self.__values.clear()
             return row
 
     def fetchall(self):
@@ -147,11 +152,9 @@ class MySql:
             # Read fetch all rows
             cursor.execute(self.__sql, self.__values)
             rows = cursor.fetchall()
-            self.__values.clear()
             return rows
 
     def __del__(self):
         self.__sql = None
         self.__table = None
-        self.__values.clear()
 

@@ -20,16 +20,13 @@ def menu():
     print("|                                                         |")
     print("-----------------------------------------------------------")
     option = input("Selecione uma opção: ")
-    os.system("cls")
 
     if option == "D" or option == "d":
         print("|  A SCRAPPER OS DISTRITOS PORTUGUESES ...  |")
         Scrapper.fetch_districts()
-        menu()
     elif option == "C" or option == "c":
         print("|  A SCRAPPER OS CONCELHOS PORTUGUESES ...  |")
         Scrapper.fetch_counties()
-        menu()
     elif option == "F" or option == "f":
         print("|  A SCRAPPER OS FREGUESIAS PORTUGUESES ...  |")
         Scrapper.fetch_parishes()
@@ -39,6 +36,4 @@ def menu():
     else:
         print("ERROR OPTION")
         menu()
-
-
 menu()
