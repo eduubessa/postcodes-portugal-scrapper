@@ -41,11 +41,10 @@ class Browser:
     def fetch_all_parishes(self, district, county):
         el_parishes = self.driver.find_elements_by_xpath('//*[@id="county"]/div/div[1]/div[1]/ul/li')
         for el_parish in el_parishes:
-            print(district)
             Parish.district = district["id"]
             Parish.county = county["id"]
             Parish.parish = el_parish.find_element_by_tag_name("a").text
-            County.save()
+            Parish.save()
 
     # Fetch all counties by district on website
     def fetch_all_counties_by_district(self, district):
@@ -62,6 +61,13 @@ class Browser:
             x = el_county.find_element_by_tag_name("a").text
             if x == county:
                 return el_county.find_element_by_tag_name("a").get_attribute("href")
+
+    def fetch_all_postcodes_by_parish(self, parish):
+        el_postcodes = self.driver.find_elements_by_xpath('//*[@id="isolated"]/div/p[@class="odd"]')
+        for el_postcode in el_postcodes:
+            x = el_postcode.find_elements_by_xpath('span[3]/a').text
+            print(x)
+
 
     def navigation_to(self, to):
         if to is not None:

@@ -7,6 +7,7 @@ use datadev;
 drop table if exists postcodes;
 drop table if exists districts;
 drop table if exists counties;
+drop table if exists parishes;
 
 create table postcodes (
     id bigint unsigned auto_increment primary key,
@@ -34,13 +35,14 @@ create table counties (
     scrapped tinyint default 0
 );
 
-create table counties (
+create table parishes (
     id bigint unsigned auto_increment primary key,
     district_id bigint unsigned not null,
     county_id bigint unsigned not null,
-    parish int default 0,
+    parish varchar(50) default 0,
     scrapped tinyint default 0
 );
 
 select * from districts;
 select * from counties;
+select * from parishes;

@@ -47,7 +47,7 @@ class Parish:
         data = [
             ['district_id', Parish.district],
             ['county_id', Parish.county],
-            ['Parish', Parish.Parish],
+            ['Parish', Parish.parish],
             ['scrapped', Parish.scrapped]
         ]
         db = DB()

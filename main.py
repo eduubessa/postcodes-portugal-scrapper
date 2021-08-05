@@ -16,6 +16,8 @@ def menu():
     print("|  D - Buscar todos distritos                             |")
     print("|  C - Buscar todos concelhos                             |")
     print("|  F - Buscar todos freguesias                            |")
+    print("|  P - Buscar todos códigos postais                       |")
+    print("|                                                         |")
     print("-----------------------------------------------------------")
     option = input("Selecione uma opção: ")
     os.system("cls")
@@ -31,6 +33,9 @@ def menu():
     elif option == "F" or option == "f":
         print("|  A SCRAPPER OS FREGUESIAS PORTUGUESES ...  |")
         Scrapper.fetch_parishes()
+    elif option == "P" or option == "p":
+        print("|  A SCRAPPER OS CÓDIGO POSTAL PORTUGUESES ...  |")
+        Scrapper.fetch_postcodes()
     else:
         print("ERROR OPTION")
         menu()
