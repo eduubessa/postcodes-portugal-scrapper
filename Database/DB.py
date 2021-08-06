@@ -20,7 +20,7 @@ class DB:
         return self
 
     def select(self, columns = '*'):
-        self.__query = self.__database.select(columns);
+        self.__query = self.__database.select(columns)
         return self
 
     def where(self, field, value, condition = "LIKE"):
@@ -51,4 +51,5 @@ class DB:
 
     def __del__(self):
         self.__query = None
+        self.__database = None
 

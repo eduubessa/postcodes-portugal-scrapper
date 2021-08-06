@@ -65,12 +65,12 @@ class Scrapper:
                 browser.navigation_to(to)
                 # Fetch all parishes by county
                 time.sleep(3)
-                parishes = Parish.where('district_id', district["id"]).where('county_id', county["id"]).get()
+                parishes = Parish.where('county_id', county["id"]).get()
                 # Loop on parishes fetch all postcodes
                 for parish in parishes:
                     to = browser.fetch_all_postcodes_by_parish(parish["parish"])
                     browser.navigation_to(to)
-                    # browser.fetch_all_postcodes(district, county, parish)
+                    browser.fetch_all_postcodes(district, county, parish)
                     browser.county_page()
                     time.sleep(2)
             browser.district_page()

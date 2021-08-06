@@ -26,7 +26,9 @@ class County:
 
     @staticmethod
     def get():
-        return County.__query.get()
+        result = County.__query.get()
+        County.__query = None
+        return result
 
     @staticmethod
     def first():

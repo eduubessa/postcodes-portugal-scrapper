@@ -1,5 +1,6 @@
 from Database.DB import DB
 
+
 class Parish:
     __table = "parishes"
 
@@ -18,6 +19,7 @@ class Parish:
 
     @staticmethod
     def where(field, value, condition="LIKE"):
+        print(field, value)
         db = DB()
         if Parish.__query is None:
             Parish.__query = db.table(Parish.__table).select().where(field, value, condition)
@@ -63,4 +65,3 @@ class Parish:
         ]
         db = DB()
         return Parish.__query.update(data)
-

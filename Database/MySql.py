@@ -106,6 +106,7 @@ class MySql:
 
             if "SELECT" in self.__sql or "UPDATE" in self.__sql or "DELETE" in self.__sql:
 
+
                 if "WHERE" in self.__sql:
                     self.__sql += " AND {}".format(field)
                 else:
@@ -144,14 +145,17 @@ class MySql:
             # Read single record
             cursor.execute(self.__sql, self.__values)
             row = cursor.fetchone()
-            self.__values.clear()
+            self.__reset()
             return row
 
     def fetchall(self):
+        print(self.__sql)
+
         with self.__connection.cursor() as cursor:
             # Read fetch all rows
             cursor.execute(self.__sql, self.__values)
             rows = cursor.fetchall()
+            self.__values.clear()
             return rows
 
     def __del__(self):

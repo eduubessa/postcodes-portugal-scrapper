@@ -98,10 +98,10 @@ class Browser:
         self.driver.find_element_by_css_selector('.pagination > li.next > a').click()
 
     def county_page(self):
-        self.driver.find_element_by_css_selector('.breadcrumbs > a:nth-child(2)').click()
+        self.driver.find_element_by_css_selector('.breadcrumbs a:nth-child(2)').click()
 
     def district_page(self):
-        self.driver.find_element_by_css_selector('.breadcrumbs > a:first-child').click()
+        self.driver.find_element_by_css_selector('.breadcrumbs a:first-child').click()
 
     def initial_page(self):
         self.navigation_to(self.url)
