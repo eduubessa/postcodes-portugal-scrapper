@@ -64,7 +64,6 @@ class Browser:
                     Postcode.location = x[3]
                     Postcode.coords = x[0].replace("GPS: ", "")
                     Postcode.save()
-            time.sleep(random.randint(2, 4))
             try:
                 self.driver.find_element_by_css_selector('.pagination li.next a').click()
             except:
@@ -101,7 +100,7 @@ class Browser:
         self.driver.find_element_by_css_selector('.breadcrumbs a:nth-child(2)').click()
 
     def district_page(self):
-        self.driver.find_element_by_css_selector('.breadcrumbs a:first-child').click()
+        self.navigation_to(self.url)
 
     def initial_page(self):
         self.navigation_to(self.url)

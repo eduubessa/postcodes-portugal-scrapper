@@ -21,6 +21,7 @@ try:
         districts = cursor.fetchall()
 
         for district in districts:
+
             to = browser.fetch_all_counties_by_district(district["district"])
             browser.navigation_to(to)
             with connection.cursor() as cursor:
@@ -32,6 +33,7 @@ try:
                 for county in counties:
                     to = browser.fetch_all_parishes_by_county(county["county"])
                     browser.navigation_to(to)
+                    print(to)
 
                     with connection.cursor() as cursor:
                         sql = "SELECT * FROM `parishes` WHERE scrapped = FALSE AND `district_id` = %s AND `county_id`= %s;"
@@ -39,14 +41,14 @@ try:
                         parishes = cursor.fetchall()
 
                         for parish in parishes:
-                            to = browser.fetch_all_postcodes_by_parish(parish["parish"])
-                            browser.navigation_to(to)
-                            time.sleep(random.randint(1, 3))
+                            to_p = browser.fetch_all_postcodes_by_parish(parish["parish"])
+                            browser.navigation_to(to_p)
+                            time.sleep(random.randint(1, 2))
                             browser.fetch_all_postcodes(district, county, parish)
                             sql = "UPDATE `parishes` SET `scrapped` = %s WHERE `id` = %s"
                             connection.commit()
                             cursor.execute(sql, (True, parish['id']))
-                            browser.county_page()
+                            browser.navigation_to(to)
                             time.sleep(random.randint(1, 2))
 
                         with connection.cursor() as cursor:
@@ -54,12 +56,13 @@ try:
                             connection.commit()
                             cursor.execute(sql, (True, county['id']))
 
-                        browser.district_page()
+                with connection.cursor() as cursor:
+                    sql = "UPDATE `districts` SET `scrapped` = %s WHERE `id` = %s"
+                    connection.commit()
+                    cursor.execute(sql, (True, district['id']))
 
-                    with connection.cursor() as cursor:
-                        sql = "UPDATE `districts` SET `scrapped` = %s WHERE `id` = %s"
-                        connection.commit()
-                        cursor.execute(sql, (True, district['id']))
+                browser.district_page()
+
 
 except Exception as ex:
     print("MySql Connection Error:")
